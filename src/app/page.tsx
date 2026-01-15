@@ -1,5 +1,8 @@
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export default async function Home() {
   const notes = await prisma.note.findMany({
     orderBy: { createdAt: "desc" },
