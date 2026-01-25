@@ -4,12 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { signOut } from "next-auth/react";
 import {
   MessageSquare,
   Star,
   History,
   Settings,
-  Bookmark
+  Bookmark,
+  LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -109,6 +111,19 @@ export function DashboardSidebar({ name, image, email }: SidebarProps) {
               </Link>
             );
           })}
+
+          {/* Разделитель */}
+          <div className="my-1 h-px bg-slate-200" />
+
+          {/* Кнопка выхода */}
+          <button
+            type="button"
+            onClick={() => signOut({ callbackUrl: "/login" })}
+            className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-rose-600 transition-colors hover:bg-rose-50"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>Выйти</span>
+          </button>
         </div>
       </nav>
     </aside>
