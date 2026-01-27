@@ -12,6 +12,14 @@ enum Visibility {
   PUBLIC
 }
 
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  ROOM
+  STUDIO
+  COMMERCIAL
+}
+
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -70,6 +78,29 @@ model RentHub {
   userId     String
   title      String
   content    String
+  
+  // Основная информация о недвижимости
+  price      Decimal  @db.Decimal(10, 2)
+  propertyType PropertyType
+  area        Float
+  rooms       Int?
+  floor       Int?
+  totalFloors Int?
+  
+  // Адрес
+  city        String
+  district    String?
+  address     String
+  
+  // Фотографии (JSON массив URL строк)
+  images      String[] @default([])
+  
+  // Контактные данные
+  contactPhone String?
+  contactEmail String?
+  showContacts Boolean @default(true)
+  
+  // Статус
   isPublic   Boolean  @default(false)
   isFavorite Boolean  @default(false)
   createdAt  DateTime @default(now())
@@ -81,6 +112,8 @@ model RentHub {
   @@index([userId, createdAt])
   @@index([isPublic, createdAt])
   @@index([isFavorite, createdAt])
+  @@index([city, price])
+  @@index([propertyType, price])
 }
 
 model Like {

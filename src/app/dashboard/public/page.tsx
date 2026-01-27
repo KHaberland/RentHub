@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getRentList } from "@/app/dashboard/data";
 import { RentCard } from "@/components/dashboard/RentCard";
@@ -33,9 +32,6 @@ function parseSort(value?: string): SortOption {
 
 export default async function PublicDashboardPage({ searchParams }: PageProps) {
   const session = await auth();
-  if (!session?.user) {
-    redirect("/login");
-  }
 
   const resolved = await Promise.resolve(searchParams);
   const query = resolved?.q ?? "";
@@ -44,16 +40,16 @@ export default async function PublicDashboardPage({ searchParams }: PageProps) {
 
   const { items, pageCount } = await getRentList({
     scope: "public",
-    userId: session.user.id,
+    userId: session?.user?.id,
     query,
     page,
     sort
   });
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold text-slate-900">
+        <h1 className="text-xl font-bold text-slate-900">
           Публичные объявления
         </h1>
         <p className="text-sm text-slate-500">
@@ -61,7 +57,7 @@ export default async function PublicDashboardPage({ searchParams }: PageProps) {
         </p>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
         <SearchInput placeholder="Поиск по публичным объявлениям" />
         <SortSelect currentSort={sort} />
       </div>
@@ -77,10 +73,11 @@ export default async function PublicDashboardPage({ searchParams }: PageProps) {
             <RentCard
               key={item.id}
               item={item}
-              isOwner={item.userId === session.user.id}
+              isOwner={item.userId === session?.user?.id}
+              canLike={Boolean(session?.user)}
             />
           ))}
-          <Pagination page={page} pageCount={pageCount} query={query} />
+          <Pagination page={page} pageCount={pageCount} query={query} sort={sort} />
         </div>
       )}
     </div>

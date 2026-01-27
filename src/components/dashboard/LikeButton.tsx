@@ -64,10 +64,10 @@ export function LikeButton({
         onClick={handleClick}
         disabled={disabled || isPending}
         className={cn(
-          "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all",
+          "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95",
           liked
-            ? "bg-blue-100 text-blue-600 hover:bg-blue-200"
-            : "bg-slate-100 text-slate-600 hover:bg-slate-200",
+            ? "bg-primary-100 text-primary-700 hover:bg-primary-200 shadow-sm shadow-primary-500/10"
+            : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-700",
           (disabled || isPending) && "cursor-not-allowed opacity-50"
         )}
         aria-label={liked ? "Убрать лайк" : "Поставить лайк"}

@@ -8,13 +8,22 @@ export type RentScope = "mine" | "public" | "favorites";
 
 type GetRentListArgs = {
   scope: RentScope;
-  userId: string;
+  userId?: string;
   query: string;
   page: number;
   sort?: SortOption;
 };
 
-export async function getRentList({ scope, userId, query, page, sort = "recent" }: GetRentListArgs) {
+export async function getRentList({
+  scope,
+  userId,
+  query,
+  page,
+  sort = "recent"
+}: GetRentListArgs) {
+  if (scope !== "public" && !userId) {
+    throw new Error("userId is required for this scope");
+  }
   const where: Prisma.RentHubWhereInput =
     scope === "public"
       ? {
@@ -30,7 +39,7 @@ export async function getRentList({ scope, userId, query, page, sort = "recent" 
         }
       : scope === "favorites"
       ? {
-          userId,
+          userId: userId!,
           isFavorite: true,
           ...(query
             ? {
@@ -42,7 +51,7 @@ export async function getRentList({ scope, userId, query, page, sort = "recent" 
             : {})
         }
       : {
-          userId,
+          userId: userId!,
           ...(query
             ? {
                 OR: [
@@ -65,14 +74,37 @@ export async function getRentList({ scope, userId, query, page, sort = "recent" 
       orderBy,
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
-      include: {
+      select: {
+        id: true,
+        userId: true,
+        title: true,
+        content: true,
+        price: true,
+        propertyType: true,
+        area: true,
+        rooms: true,
+        floor: true,
+        totalFloors: true,
+        city: true,
+        district: true,
+        address: true,
+        images: true,
+        contactPhone: true,
+        contactEmail: true,
+        showContacts: true,
+        isPublic: true,
+        isFavorite: true,
+        createdAt: true,
+        updatedAt: true,
         _count: {
           select: { likes: true }
         },
-        likes: {
-          where: { userId },
-          select: { id: true }
-        }
+        likes: userId
+          ? {
+              where: { userId },
+              select: { id: true }
+            }
+          : false
       }
     }),
     prisma.rentHub.count({ where })
@@ -84,12 +116,25 @@ export async function getRentList({ scope, userId, query, page, sort = "recent" 
     userId: item.userId,
     title: item.title,
     content: item.content,
+    price: Number(item.price),
+    propertyType: item.propertyType,
+    area: item.area,
+    rooms: item.rooms,
+    floor: item.floor,
+    totalFloors: item.totalFloors,
+    city: item.city,
+    district: item.district,
+    address: item.address,
+    images: item.images,
+    contactPhone: item.contactPhone,
+    contactEmail: item.contactEmail,
+    showContacts: item.showContacts,
     isPublic: item.isPublic,
     isFavorite: item.isFavorite,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
     likesCount: item._count.likes,
-    likedByMe: item.likes.length > 0
+    likedByMe: userId ? item.likes.length > 0 : false
   }));
 
   return {

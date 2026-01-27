@@ -8,6 +8,19 @@ import { prisma } from "@/lib/prisma";
 const RentSchema = z.object({
   title: z.string().min(2, "Введите заголовок").max(120),
   content: z.string().min(10, "Слишком короткий текст").max(2000),
+  price: z.number().min(1, "Цена должна быть не менее 1 рубля").max(10000000, "Слишком большая цена"),
+  propertyType: z.enum(["APARTMENT", "HOUSE", "ROOM", "STUDIO", "COMMERCIAL"]),
+  area: z.number().positive("Площадь должна быть положительной").max(10000, "Слишком большая площадь"),
+  rooms: z.number().int().positive().max(20).nullable(),
+  floor: z.number().int().min(0).max(200).nullable(),
+  totalFloors: z.number().int().positive("Количество этажей должно быть положительным").max(200).nullable(),
+  city: z.string().min(1, "Укажите город").max(100),
+  district: z.string().max(100).nullable(),
+  address: z.string().min(1, "Укажите адрес").max(200),
+  images: z.array(z.string()).max(10, "Максимум 10 фотографий"),
+  contactPhone: z.string().regex(/^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/, "Некорректный формат телефона").nullable(),
+  contactEmail: z.string().email("Некорректный email").nullable(),
+  showContacts: z.boolean(),
   isPublic: z.boolean()
 });
 
@@ -43,6 +56,19 @@ export async function createRentHub(data: z.infer<typeof RentSchema>) {
       userId,
       title: payload.title,
       content: payload.content,
+      price: payload.price,
+      propertyType: payload.propertyType,
+      area: payload.area,
+      rooms: payload.rooms,
+      floor: payload.floor,
+      totalFloors: payload.totalFloors,
+      city: payload.city,
+      district: payload.district,
+      address: payload.address,
+      images: payload.images,
+      contactPhone: payload.contactPhone,
+      contactEmail: payload.contactEmail,
+      showContacts: payload.showContacts,
       isPublic: payload.isPublic
     }
   });
@@ -68,6 +94,19 @@ export async function updateRentHub(data: z.infer<typeof UpdateSchema>) {
     data: {
       title: payload.title,
       content: payload.content,
+      price: payload.price,
+      propertyType: payload.propertyType,
+      area: payload.area,
+      rooms: payload.rooms,
+      floor: payload.floor,
+      totalFloors: payload.totalFloors,
+      city: payload.city,
+      district: payload.district,
+      address: payload.address,
+      images: payload.images,
+      contactPhone: payload.contactPhone,
+      contactEmail: payload.contactEmail,
+      showContacts: payload.showContacts,
       isPublic: payload.isPublic
     }
   });

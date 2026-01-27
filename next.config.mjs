@@ -8,6 +8,11 @@ const nextConfig = {
         hostname: "lh3.googleusercontent.com"
       }
     ]
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb" // Увеличено для поддержки загрузки изображений в Base64
+    }
   }
 };
 

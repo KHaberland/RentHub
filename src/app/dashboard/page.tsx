@@ -43,29 +43,23 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   });
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold text-slate-900">
-          Личный кабинет
-        </h1>
-        <p className="text-sm text-slate-500">Управляйте своими объявлениями.</p>
-      </div>
-
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h2 className="text-lg font-semibold text-slate-900">
-            Мои объявления аренды
-          </h2>
-          <p className="text-sm text-slate-500">
+    <div className="flex flex-col gap-4 sm:gap-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
+            Мои объявления
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500">
             Создавайте, редактируйте и управляйте публичностью.
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <SearchInput />
-          <RentDialog
-            trigger={<Button>+ Новое объявление</Button>}
-          />
-        </div>
+        <RentDialog
+          trigger={<Button className="w-full sm:w-auto">+ Новое объявление</Button>}
+        />
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50 px-3 sm:px-4 py-2.5 sm:py-3">
+        <SearchInput />
       </div>
 
       {items.length === 0 ? (
@@ -74,7 +68,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
           description="Создайте первое объявление, чтобы оно появилось в списке."
         />
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3 sm:gap-4 w-full max-w-full">
           {items.map((item) => (
             <RentCard key={item.id} item={item} isOwner />
           ))}
