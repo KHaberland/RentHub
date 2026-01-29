@@ -34,10 +34,10 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-[110] w-[95vw] sm:w-[92vw] max-w-xl max-h-[95vh] sm:max-h-[90vh] translate-x-[-50%] translate-y-[-50%] rounded-xl sm:rounded-2xl border border-slate-200 bg-white shadow-soft",
+        "fixed left-[50%] z-[110] w-[95vw] sm:w-[92vw] max-w-xl translate-x-[-50%] rounded-xl sm:rounded-2xl border border-slate-200 bg-white shadow-soft",
+        "top-0 max-h-screen sm:top-[50%] sm:max-h-[90vh] sm:translate-y-[-50%]",
         className
       )}
-      style={{ marginTop: "110px" }}
       {...props}
     />
   </DialogPortal>

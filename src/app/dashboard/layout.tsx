@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { MobileMenu } from "@/components/dashboard/MobileMenu";
 
 export default async function DashboardLayout({
   children
@@ -17,7 +18,15 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
+      {/* Мобильное меню */}
+      <MobileMenu
+        name={name}
+        image={session.user.image}
+        email={session.user.email}
+      />
+      
       <div className="mx-auto flex w-full max-w-6xl overflow-hidden rounded-none sm:rounded-3xl bg-slate-100 shadow-soft">
+        {/* Десктопный сайдбар */}
         <div className="hidden md:block">
           <DashboardSidebar
             name={name}

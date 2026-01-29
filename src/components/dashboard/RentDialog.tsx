@@ -165,8 +165,8 @@ export function RentDialog({ trigger, initial }: RentDialogProps) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange} key={initial?.id || "new"}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="flex flex-col max-h-[95vh] sm:max-h-[85vh] p-0 overflow-hidden h-[95vh] sm:h-[85vh]">
-        <div className="flex-shrink-0 px-4 sm:px-6 pt-4 sm:pt-6 pb-3 sm:pb-4 border-b border-slate-200">
+      <DialogContent className="flex flex-col max-h-screen sm:max-h-[85vh] p-0 overflow-hidden h-screen sm:h-[85vh] sm:translate-y-[-50%]">
+        <div className="flex-shrink-0 px-4 sm:px-6 pt-4 sm:pt-6 pb-3 sm:pb-4 border-b border-slate-200 bg-white">
           <DialogHeader>
             <DialogTitle>
               {initial ? "Редактировать объявление" : "Новое объявление"}
@@ -178,7 +178,7 @@ export function RentDialog({ trigger, initial }: RentDialogProps) {
         </div>
 
         <form className="flex flex-col flex-1 min-h-0 overflow-hidden" onSubmit={handleSubmit}>
-          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4 pb-4 space-y-3 sm:space-y-4 min-h-0">
+          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4 space-y-3 sm:space-y-4 min-h-0 pb-28 sm:pb-4">
           <div className="space-y-2">
             <Label htmlFor="title">Заголовок</Label>
             <Input
@@ -383,11 +383,11 @@ export function RentDialog({ trigger, initial }: RentDialogProps) {
           </label>
           </div>
 
-          <DialogFooter className="flex-shrink-0 px-4 sm:px-6 pt-3 sm:pt-4 pb-4 sm:pb-6 flex-col sm:flex-row gap-2 sm:gap-2">
-            <Button variant="secondary" type="button" onClick={() => setOpen(false)} className="w-full sm:w-auto">
+          <DialogFooter className="flex-shrink-0 px-4 sm:px-6 pt-3 sm:pt-4 pb-4 sm:pb-6 border-t border-slate-200 bg-white flex-col sm:flex-row gap-2 sm:gap-2 mt-auto shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+            <Button variant="secondary" type="button" onClick={() => setOpen(false)} className="w-full sm:w-auto order-2 sm:order-1">
               Отмена
             </Button>
-            <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
+            <Button type="submit" disabled={isPending} className="w-full sm:w-auto order-1 sm:order-2">
               {isPending ? "Сохраняю..." : "Сохранить"}
             </Button>
           </DialogFooter>
